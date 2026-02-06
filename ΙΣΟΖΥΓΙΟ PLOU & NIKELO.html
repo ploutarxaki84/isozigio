@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUDGET MANAGER — PLOU & NIKELO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+
+    <!-- DIGITAL CLOCK -->
+    <div id="digitalClock" class="digital-clock">
+        <div class="full-date">
+            <span class="weekday">Δευτέρα</span>, 
+            <span class="day">3</span> 
+            <span class="month">Δεκεμβρίου</span> 
+            <span class="year">1894</span>
+        </div>
+        <div class="time-section">
+            <span class="hours">14</span>:<span class="minutes">25</span>:<span class="seconds">
+                <span class="second-tens">3</span><span class="second-ones">7</span>
+            </span>
+        </div>
+    </div>
+    
+    <!-- FLOATING DEBT -->
+    <div id="floatingDebt" class="floating-debt" style="display: none;">
+        <h3><i class="fas fa-scale-balanced"></i> ΖΩΝΤΑΝΟ ΧΡΕΟΣ</h3>
+        <div class="debt-status">
+            <div class="debt-amount">ΚΑΝΕΝΑ ΧΡΕΟΣ</div>
+        </div>
+    </div>
+
+    <!-- BACKUP NOTIFICATION -->
+    <div id="backupNotification">
+        <div class="backup-notification-header">
+            <i class="fas fa-check-circle"></i>
+            <span>ΑΠΟΘΗΚΕΥΣΗ ΟΛΟΚΛΗΡΩΘΗΚΗ</span>
+        </div>
+        <div class="backup-notification-details">
+            <strong id="backupCount">0</strong> εγγραφές αποθηκεύτηκαν<br>
+            <span id="backupTimestamp">-</span>
+        </div>
+    </div>
+
+    <!-- ALL ENTRIES MODAL -->
+    <div id="allEntriesModal" class="all-entries-modal">
+        <div class="all-entries-modal-content">
+            <h2><i class="fas fa-list"></i> ΟΛΕΣ ΟΙ ΕΓΓΡΑΦΕΣ</h2>
+            
+            <div class="multi-delete-controls">
+                <div class="multi-delete-info">
+                    <i class="fas fa-check-square"></i>
+                    Επιλεγμένες: <span id="selectedCount">0</span>
+                </div>
+                <button id="deleteSelectedBtn" class="btn-danger" disabled>
+                    <i class="fas fa-trash"></i> ΔΙΑΓΡΑΦΗ ΕΠΙΛΕΓΜΕΝΩΝ
+                </button>
+            </div>
+            
+            <div class="month-selector-container" id="allEntriesMonthSelector">
+                <button class="month-selector-btn active" data-month="all">ΌΛΑ</button>
+            </div>
+            
+            <table class="compact-table" id="allEntriesTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAllCheckbox"></th>
+                        <th>ΗΜΕΡΟΜΗΝΙΑ</th>
+                        <th>ΜΗΝΑΣ</th>
+                        <th>ΚΑΤΗΓΟΡΙΑ</th>
+                        <th>ΤΥΠΟΣ</th>
+                        <th>ΠΟΣΟ</th>
+                        <th>ΠΟΙΟΣ</th>
+                        <th>ΣΥΝΕΙΣΦΟΡΑ</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
+            <div class="table-footer">
+                <div id="allEntriesInfo">Εμφάνιση 0 εγγραφών</div>
+            </div>
+
+            <div class="modal-load-more-container" id="modalLoadMoreContainer">
+                <button id="modalLoadMoreBtn" class="load-more-btn" onclick="loadMoreInModal()">
+                    <i class="fas fa-arrow-down"></i> ΦΟΡΤΩΣΕ 10 ΑΚΟΜΗ
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 25px;">
+                <button onclick="closeAllEntriesModal()" class="btn-primary" style="padding: 12px 30px;">
+                    ΚΛΕΙΣΙΜΟ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENTRIES DETAILS MODAL -->
+    <div id="entriesDetailsModal" class="entries-modal">
+        <div class="entries-modal-content">
+            <div class="entries-modal-header">
+                <h3 id="entriesTitle">ΙΑΝΟΥΑΡΙΟΣ - ΕΝΟΙΚΙΟ</h3>
+                <button class="close-entries-btn" onclick="closeEntriesModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="entries-total">
+                <i class="fas fa-calendar-alt"></i>
+                <span>ΣΥΝΟΛΟ: <strong>0 καταχωρήσεις - 0€</strong></span>
+            </div>
+            
+            <div class="entries-list" id="entriesList">
+                <!-- Θα γεμίσει δυναμικά -->
+            </div>
+            
+            <div class="entries-actions">
+                <button class="btn-secondary" onclick="goBackToGrid()">
+                    <i class="fas fa-arrow-left"></i> ΠΙΣΩ ΣΤΟ ΠΛΕΓΜΑ
+                </button>
+                <button class="btn-primary" onclick="closeEntriesModal()">
+                    ΚΛΕΙΣΙΜΟ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="logo">
+            <i class="fas fa-wallet"></i>
+            <span class="logo-title">ΙΣΟΖΥΓΙΟ PLOU & NIKELO</span>
+        </div>
+
+        <div class="center-section">
+            <button id="addEntryBtn" class="pill-btn add-entry-btn" data-tooltip="ΝΕΑ ΚΑΤΑΧΩΡΗΣΗ">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button id="tabBase" class="tab tab-cyan" data-tab="base">
+                <i class="fas fa-table"></i> ΒΑΣΗ
+            </button>
+            <button id="tabBalance" class="tab tab-purple" data-tab="balance">
+                <i class="fas fa-scale-balanced"></i> ΙΣΟΖΥΓΙΟ
+            </button>
+            <button id="tabAnalysis" class="tab tab-cyan" data-tab="analysis">
+                <i class="fas fa-chart-pie"></i> ΑΝΑΛΥΣΗ
+            </button>
+        </div>
+
+        <div class="right-section">
+            <button id="importBtn" class="pill-btn action-btn button-tooltip" data-tooltip="ΕΙΣΑΓΩΓΗ">
+                <i class="fas fa-file-import"></i>
+            </button>
+            
+            <button id="exportBtn" class="pill-btn action-btn button-tooltip" data-tooltip="ΕΞΑΓΩΓΗ">
+                <i class="fas fa-file-export"></i>
+            </button>
+            
+            <button id="backupBtn" class="pill-btn backup-btn button-tooltip" data-tooltip="ΑΠΟΘΗΚΕΥΣΗ">
+                <i class="fas fa-save"></i>
+            </button>
+            
+            <button id="restoreBtn" class="pill-btn restore-btn button-tooltip" data-tooltip="ΕΠΑΝΑΦΟΡΗ">
+                <i class="fas fa-history"></i>
+            </button>
+        </div>
+
+        <input type="file" id="fileInput" accept=".json,.xlsx,.xls" style="display:none;">
+    </header>
+
+    <main>
+        <!-- ΒΑΣΗ -->
+        <section id="base" class="tab-content active">
+            <div class="table-card">
+                <h2><i class="fas fa-table"></i> ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ</h2>
+                
+                <div class="month-filter">
+                    <button class="month-filter-btn active" data-month="recent">
+                        <i class="fas fa-clock"></i> ΠΡΟΣΦΑΤΕΣ (10)
+                    </button>
+                    <button class="month-filter-btn" id="showAllEntriesBtn">
+                        <i class="fas fa-list"></i> ΑΝΑ ΜΗΝΑ
+                    </button>
+                </div>
+                
+                <!-- ΑΦΗΡΗΜΕΝΟ ΤΟ baseMonthSelector -->
+                
+                <table class="compact-table" id="baseTable">
+                    <thead>
+                        <tr>
+                            <th>ΗΜΕΡΟΜΗΝΙΑ</th>
+                            <th>ΜΗΝΑΣ</th>
+                            <th>ΚΑΤΗΓΟΡΙΑ</th>
+                            <th>ΤΥΠΟΣ</th>
+                            <th>ΠΟΣΟ</th>
+                            <th>ΠΟΙΟΣ</th>
+                            <th>ΣΥΝΕΙΣΦΟΡΑ</th>
+                            <th>ΕΝΕΡΓΕΙΑ</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                
+                <div class="mobile-entries" id="mobileEntriesContainer"></div>
+                
+                <div class="table-footer">
+                    <div id="tableInfo">Εμφάνιση 0 πρόσφατων εγγραφών</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ΙΣΟΖΥΓΙΟ -->
+        <section id="balance" class="tab-content">
+            <div class="table-card">
+                <h2><i class="fas fa-scale-balanced"></i> ΙΣΟΖΥΓΙΟ ΑΝΑ ΜΗΝΑ</h2>
+                <table class="compact-table" id="balanceTable">
+                    <thead>
+                        <tr>
+                            <th>ΜΗΝΑΣ</th>
+                            <th>PLOU (€)</th>
+                            <th>NIKELO (€)</th>
+                            <th>ΧΡΕΟΣ</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="categorySummaryContainer" class="table-card" style="margin-top:20px;">
+                <h2><i class="fas fa-layer-group"></i> ΣΥΝΟΛΑ ΑΝΑ ΚΑΤΗΓΟΡΙΑ</h2>
+                <table class="compact-table" id="categorySummaryTable">
+                    <thead>
+                        <tr>
+                            <th>ΚΑΤΗΓΟΡΙΑ</th>
+                            <th>ΠΛΗΘΟΣ</th>
+                            <th>PLOU</th>
+                            <th>NIKELO</th>
+                            <th>NET ΧΡΕΟΣ</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ΑΝΑΛΥΣΗ -->
+        <section id="analysis" class="tab-content">
+            <div class="table-card">
+                <h2><i class="fas fa-chart-pie"></i> ΑΝΑΛΥΣΗ ΚΑΤΗΓΟΡΙΩΝ ΚΑΙ ΜΗΝΩΝ</h2>
+                
+                <!-- ΟΛΟΚΛΗΡΟ ΤΟ ΠΛΕΓΜΑ -->
+                <div class="full-bubble-grid-container" id="fullBubbleGridContainer">
+                    <!-- Θα γεμίσει δυναμικά -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL ΝΕΑΣ ΚΑΤΑΧΩΡΗΣΗΣ -->
+    <div id="entryModal" class="modal">
+        <div class="modal-content">
+            <h2>ΝΕΑ ΚΑΤΑΧΩΡΗΣΗ</h2>
+
+            <label>ΗΜΕΡΟΜΗΝΙΑ</label>
+            <input type="date" id="entryDate" class="date-input">
+
+            <label>ΚΑΤΗΓΟΡΙΑ</label>
+            <select id="entryCategory">
+                <option value="ΕΝΟΙΚΙΟ" selected>🏠 ΕΝΟΙΚΙΟ</option>
+                <option value="ΔΕΗ">⚡ ΔΕΗ</option>
+                <option value="ΕΥΔΑΠ">💧 ΕΥΔΑΠ</option>
+                <option value="NOVA">🌐 NOVA</option>
+                <option value="ΨΩΝΙΑ">🛒 ΨΩΝΙΑ</option>
+                <option value="ΨΥΧΑΓΩΓΙΑ">🎭 ΨΥΧΑΓΩΓΙΑ</option>
+                <option value="ΑΛΛΑ">📝 ΑΛΛΑ</option>
+                <option value="ΜΙΣΘΟΣ">💼 ΜΙΣΘΟΣ</option>
+                <option value="ΕΠΙΔΟΜΑ">💰 ΕΠΙΔΟΜΑ</option>
+                <option value="ΜΕΤΑΦΟΡΑ">🔄 ΜΕΤΑΦΟΡΑ</option>
+            </select>
+
+            <label>ΤΥΠΟΣ</label>
+            <select id="entryType">
+                <option value="ΕΞΟΔΑ" selected>ΕΞΟΔΑ</option>
+                <option value="ΕΣΟΔΑ">ΕΣΟΔΑ</option>
+            </select>
+
+            <label>ΠΟΣΟ (€)</label>
+            <input type="number" id="entryAmount" step="0.01">
+
+            <label>ΠΟΙΟΣ</label>
+            <select id="entryPerson">
+                <option value="Plou" selected>PLOU</option>
+                <option value="Nikelo">NIKELO</option>
+            </select>
+
+            <label>ΣΥΝΕΙΣΦΟΡΑ</label>
+            <select id="entryContribution">
+                <option value="ΝΑΙ" selected>ΝΑΙ</option>
+                <option value="ΟΧΙ">ΟΧΙ</option>
+            </select>
+            <span id="incomeLockMessage" style="display: none; font-size: 0.8rem; color: var(--neon-cyan); margin-top: 5px;">
+                <i class="fas fa-info-circle"></i> Τα έσοδα δεν συμμετέχουν στον υπολογισμό χρέους
+            </span>
+
+            <div class="modal-actions">
+                <button id="saveEntry" class="btn-primary">ΑΠΟΘΗΚΕΥΣΗ</button>
+                <button class="btn-secondary" onclick="closeModal()">ΑΚΥΡΟ</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

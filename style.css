@@ -1,0 +1,1870 @@
+/* ---------------------------------------------------------
+   GLOBAL VARIABLES — DARK MODE
+--------------------------------------------------------- */
+:root {
+    --bg: #0d0d12;
+    --bg-card: #1a1a24;
+    --bg-glass: rgba(255,255,255,0.05);
+    --text: #e4e4e7;
+    --text-dim: #a1a1aa;
+
+    --neon-purple: #7f5af0;
+    --neon-purple-glow: rgba(127, 90, 240, 0.6);
+    --neon-purple-light: rgba(127, 90, 240, 0.2);
+
+    --neon-cyan: #3de8ff;
+    --neon-cyan-glow: rgba(61, 232, 255, 0.6);
+    --neon-cyan-light: rgba(61, 232, 255, 0.2);
+
+    --radius: 14px;
+    --transition: 0.25s ease;
+}
+
+/* ---------------------------------------------------------
+   GLOBAL RESET
+--------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background var(--transition), color var(--transition);
+    text-transform: uppercase;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+
+/* ---------------------------------------------------------
+   NEON ANIMATIONS
+--------------------------------------------------------- */
+@keyframes neonPulseLogo {
+    0% {
+        color: var(--neon-purple);
+        text-shadow: 0 0 6px var(--neon-purple-glow), 0 0 14px var(--neon-purple-glow);
+    }
+    25% {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 8px var(--neon-cyan-glow), 0 0 18px var(--neon-cyan-glow);
+    }
+    50% {
+        color: var(--neon-purple);
+        text-shadow: 0 0 10px var(--neon-purple-glow), 0 0 22px var(--neon-purple-glow);
+    }
+    75% {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 8px var(--neon-cyan-glow), 0 0 18px var(--neon-cyan-glow);
+    }
+    100% {
+        color: var(--neon-purple);
+        text-shadow: 0 0 6px var(--neon-purple-glow), 0 0 14px var(--neon-purple-glow);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes backupPulse {
+    0%, 100% { 
+        box-shadow: 0 0 15px var(--neon-cyan-glow);
+    }
+    50% { 
+        box-shadow: 0 0 25px var(--neon-cyan-glow);
+    }
+}
+
+@keyframes backupClick {
+    0% {
+        background: transparent;
+        color: var(--neon-cyan);
+        box-shadow: 0 0 8px var(--neon-cyan-glow);
+    }
+    50% {
+        background: var(--neon-purple);
+        color: #000;
+        box-shadow: 0 0 20px var(--neon-purple-glow);
+    }
+    100% {
+        background: transparent;
+        color: var(--neon-cyan);
+        box-shadow: 0 0 8px var(--neon-cyan-glow);
+    }
+}
+
+@keyframes blink-plou {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 15px var(--neon-cyan-glow);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.05);
+        box-shadow: 0 0 25px var(--neon-cyan-glow);
+    }
+}
+
+@keyframes blink-nikelo {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 15px var(--neon-purple-glow);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.05);
+        box-shadow: 0 0 25px var(--neon-purple-glow);
+    }
+}
+
+/* ---------------------------------------------------------
+   MOBILE CARDS
+--------------------------------------------------------- */
+.mobile-entries {
+    display: none;
+    margin-top: 20px;
+}
+
+.mobile-entry-card {
+    background: var(--bg-card);
+    border: 1px solid var(--neon-purple);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(127, 90, 240, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mobile-entry-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(127, 90, 240, 0.25);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--bg-glass);
+}
+
+.card-date {
+    font-size: 0.9rem;
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+.card-category {
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(127, 90, 240, 0.1);
+    color: var(--neon-purple);
+}
+
+.card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+}
+
+.card-person {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.card-person.plou {
+    color: var(--neon-cyan);
+}
+
+.card-person.nikelo {
+    color: var(--neon-purple);
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--bg-glass);
+    font-size: 0.85rem;
+}
+
+.card-type {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.type-expense {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+}
+
+.type-income {
+    background: rgba(81, 207, 102, 0.1);
+    color: #51cf66;
+}
+
+.card-contribution {
+    color: var(--text-dim);
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.card-actions button {
+    background: none;
+    border: 1px solid var(--bg-glass);
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.card-actions button:hover {
+    background: var(--neon-purple);
+    color: #000;
+    border-color: var(--neon-purple);
+}
+
+/* MODAL LOAD MORE */
+.modal-load-more-container {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    border-top: 1px solid var(--bg-glass);
+}
+
+.load-more-btn {
+    background: rgba(61, 232, 255, 0.1);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.load-more-btn:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-cyan-glow);
+    transform: translateY(-2px);
+}
+
+.load-more-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* RESPONSIVE: Κρύβει πίνακα, δείχνει κάρτες */
+@media (max-width: 768px) {
+    .compact-table {
+        display: none !important;
+    }
+    
+    .mobile-entries {
+        display: block;
+    }
+    
+    /* Βελτίωση floating debt σε mobile */
+    .floating-debt {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+    }
+    
+    .all-entries-modal-content {
+        padding: 15px;
+    }
+    
+    .detail-modal-content,
+    .entries-modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    /* Bubble grid responsive */
+    .bubble-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        grid-template-rows: repeat(10, 1fr) !important;
+    }
+    
+    .month-header {
+        font-size: 0.7rem !important;
+    }
+    
+    .category-cell {
+        font-size: 0.7rem !important;
+    }
+    
+    .bubble {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ---------------------------------------------------------
+   FLOATING DEBT INDICATOR
+--------------------------------------------------------- */
+.floating-debt {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(26, 26, 36, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--neon-purple);
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    box-shadow: 0 0 25px var(--neon-purple-glow);
+    z-index: 1000;
+    min-width: 250px;
+    animation: backupPulse 2s infinite;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.floating-debt h3 {
+    color: var(--neon-cyan);
+    margin: 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--bg-glass);
+    padding-bottom: 8px;
+}
+
+.debt-amount {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.debt-nikelo .debt-amount {
+    color: var(--neon-purple);
+}
+
+.debt-plou .debt-amount {
+    color: var(--neon-cyan);
+}
+
+.debt-none .debt-amount {
+    color: #00ff00;
+}
+
+/* ---------------------------------------------------------
+   BACKUP NOTIFICATION - ΑΥΞΗΣΗ ΔΙΑΡΚΕΙΑΣ ΣΕ 5 ΔΕΥΤΕΡΟΛΕΠΤΑ
+--------------------------------------------------------- */
+#backupNotification {
+    position: fixed;
+    top: 80px;
+    left: 30px;
+    background: var(--bg-card);
+    border: 2px solid var(--neon-cyan);
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    box-shadow: 0 0 25px var(--neon-cyan-glow);
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 350px;
+    display: none;
+    animation: slideDown 0.3s ease-out, backupPulse 2s infinite;
+    backdrop-filter: blur(10px);
+}
+
+.backup-notification-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--neon-cyan);
+    font-size: 0.9rem;
+}
+
+.backup-notification-details {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+}
+
+.backup-notification-details strong {
+    color: var(--neon-purple);
+}
+
+/* ---------------------------------------------------------
+   TOP BAR (3-COLUMN LAYOUT)
+--------------------------------------------------------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg-card);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bg-glass);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.logo i {
+    color: var(--neon-purple);
+}
+
+.logo-title {
+    animation: neonPulseLogo 3.2s infinite;
+}
+
+/* ---------------------------------------------------------
+   CENTER SECTION: ΒΑΣΗ + ΙΣΟΖΥΓΙΟ + ΑΝΑΛΥΣΗ + ΝΕΑ ΚΑΤΑΧΩΡΗΣΗ
+--------------------------------------------------------- */
+.center-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+    min-width: 300px;
+}
+
+/* ---------------------------------------------------------
+   RIGHT SECTION: 4 COMPACT BUTTONS (ICONS ONLY)
+--------------------------------------------------------- */
+.right-section {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* TOOLTIP FOR BUTTONS */
+.button-tooltip {
+    position: relative;
+}
+
+.button-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    color: var(--neon-cyan);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    border: 1px solid var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan-glow);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 1000;
+}
+
+.button-tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---------------------------------------------------------
+   BUTTONS (COMPACT - ICONS ONLY)
+--------------------------------------------------------- */
+.pill-btn {
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    white-space: nowrap;
+    border: 2px solid;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+/* ΝΕΑ ΚΑΤΑΧΩΡΗΣΗ - ΤΥΡΚΟΥΑΖ */
+.add-entry-btn {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.add-entry-btn:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-cyan-glow);
+    transform: translateY(-2px);
+}
+
+/* ΕΙΣΑΓΩΓΗ / ΕΞΑΓΩΓΗ - ΜΩΒ → ΤΥΡΚΟΥΑΖ */
+.action-btn {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 8px var(--neon-purple-glow);
+}
+
+.action-btn:hover {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    background: transparent;
+    box-shadow: 0 0 15px var(--neon-cyan-glow);
+    transform: translateY(-2px);
+}
+
+/* ΑΠΟΘΗΚΕΥΣΗ / ΕΠΑΝΑΦΟΡΑ - ΤΥΡΚΟΥΑΖ → ΜΩΒ */
+.backup-btn, .restore-btn {
+    color: var(--neon-cyan) !important;
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 8px var(--neon-cyan-glow) !important;
+}
+
+.backup-btn:hover, .restore-btn:hover {
+    color: var(--neon-purple) !important;
+    border-color: var(--neon-purple) !important;
+    background: transparent;
+    box-shadow: 0 0 15px var(--neon-purple-glow) !important;
+    transform: translateY(-2px);
+}
+
+.backup-btn.clicked, .restore-btn.clicked {
+    animation: backupClick 0.3s ease;
+}
+
+/* ---------------------------------------------------------
+   TABS - MINIMAL NEON
+--------------------------------------------------------- */
+.tab {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background: transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid;
+}
+
+/* ΒΑΣΗ — ΤΥΡΚΟΥΑΖ */
+.tab-cyan {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.tab-cyan:hover {
+    box-shadow: 0 0 14px var(--neon-cyan-glow);
+    transform: scale(1.05);
+}
+
+/* ΙΣΟΖΥΓΙΟ — ΜΩΒ */
+.tab-purple {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 8px var(--neon-purple-glow);
+}
+
+.tab-purple:hover {
+    box-shadow: 0 0 14px var(--neon-purple-glow);
+    transform: scale(1.05);
+}
+
+/* ---------------------------------------------------------
+   MAIN CONTENT
+--------------------------------------------------------- */
+main {
+    padding: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    min-height: calc(100vh - 100px);
+}
+
+/* ---------------------------------------------------------
+   BASE TABLE WITH FILTERS
+--------------------------------------------------------- */
+.table-card {
+    background: var(--bg-card);
+    padding: 15px;
+    border-radius: var(--radius);
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+    border: 1px solid var(--bg-glass);
+    margin-bottom: 20px;
+    animation: slideUp 0.3s ease-out;
+}
+
+.table-card h2 {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    color: var(--neon-cyan);
+    border-bottom: 2px solid var(--neon-cyan);
+    padding-bottom: 8px;
+}
+
+/* MONTH FILTER - NEW STYLE */
+.month-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.month-filter-btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.month-filter-btn:hover {
+    background: var(--neon-cyan);
+    color: #000;
+}
+
+.month-filter-btn.active {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+/* NEW MONTH SELECTOR STYLE */
+.month-selector-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.month-selector-btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 60px;
+    text-align: center;
+}
+
+.month-selector-btn:hover {
+    background: var(--neon-cyan);
+    color: #000;
+}
+
+.month-selector-btn.active {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+/* TABLE FOOTER */
+.table-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--bg-glass);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+/* COMPACT TABLES */
+.compact-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.8rem;
+}
+
+.compact-table th {
+    text-align: left;
+    padding: 10px 8px;
+    color: #000000;
+    background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.compact-table td {
+    padding: 8px;
+    border-bottom: 1px solid var(--bg-glass);
+    font-size: 0.8rem;
+}
+
+.compact-table tr:hover {
+    background: rgba(127, 90, 240, 0.12);
+}
+
+/* ---------------------------------------------------------
+   ALL ENTRIES MODAL - NEW POPUP
+--------------------------------------------------------- */
+.all-entries-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    padding: 20px;
+}
+
+.all-entries-modal-content {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: var(--radius);
+    width: 95%;
+    max-width: 1400px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 40px var(--neon-purple-glow);
+    border: 2px solid var(--neon-purple);
+    animation: slideUp 0.4s ease-out;
+}
+
+.all-entries-modal-content h2 {
+    color: var(--neon-purple);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+}
+
+/* MULTI DELETE CONTROLS */
+.multi-delete-controls {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(26, 26, 36, 0.7);
+    border-radius: var(--radius);
+    border: 1px solid var(--neon-purple);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.multi-delete-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+#selectedCount {
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.btn-danger {
+    background: #ff4757;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-danger:hover {
+    background: #ff3742;
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+}
+
+.btn-danger:disabled {
+    background: #555;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* CHECKBOX COLUMN */
+.compact-table th:first-child,
+.compact-table td:first-child {
+    width: 40px;
+    text-align: center;
+}
+
+.compact-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--neon-cyan);
+}
+
+/* ---------------------------------------------------------
+   DETAIL & ENTRIES MODALS
+--------------------------------------------------------- */
+.detail-modal, .entries-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    padding: 20px;
+}
+
+.detail-modal-content, .entries-modal-content {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 40px var(--neon-purple-glow);
+    border: 2px solid var(--neon-purple);
+    animation: slideUp 0.4s ease-out;
+}
+
+.detail-modal-header, .entries-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--neon-cyan);
+}
+
+.detail-modal-header h3, .entries-modal-header h3 {
+    color: var(--neon-cyan);
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.close-detail-btn, .close-entries-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-detail-btn:hover, .close-entries-btn:hover {
+    color: var(--neon-purple);
+}
+
+/* DETAIL SUMMARY */
+.detail-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.person-summary {
+    background: rgba(26, 26, 36, 0.7);
+    border-radius: var(--radius);
+    padding: 15px;
+    border: 1px solid var(--bg-glass);
+    transition: var(--transition);
+}
+
+.person-summary:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-2px);
+}
+
+.person-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.person-icon {
+    font-size: 1.2rem;
+}
+
+.plou-icon {
+    color: var(--neon-cyan);
+}
+
+.nikelo-icon {
+    color: var(--neon-purple);
+}
+
+.person-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.person-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-count {
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.stat-amount {
+    color: var(--neon-cyan);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* DETAIL TOTAL */
+.detail-total {
+    background: rgba(127, 90, 240, 0.1);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--neon-purple);
+}
+
+.total-label {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.total-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-count {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.total-amount {
+    color: var(--neon-purple);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* ENTRIES LIST */
+.entries-total {
+    background: rgba(61, 232, 255, 0.1);
+    border-radius: var(--radius);
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--neon-cyan);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.entries-total i {
+    color: var(--neon-cyan);
+}
+
+.entries-total strong {
+    color: var(--neon-purple);
+}
+
+.entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.entry-day-group {
+    background: rgba(26, 26, 36, 0.7);
+    border-radius: var(--radius);
+    padding: 15px;
+    border: 1px solid var(--bg-glass);
+}
+
+.day-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--bg-glass);
+}
+
+.day-header i {
+    color: var(--neon-cyan);
+}
+
+.day-date {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.day-total {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+
+.person-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.person-entry {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.entry-person {
+    margin-bottom: 10px;
+}
+
+.person-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.plou-badge {
+    background: rgba(61, 232, 255, 0.1);
+    color: var(--neon-cyan);
+    border: 1px solid var(--neon-cyan);
+}
+
+.nikelo-badge {
+    background: rgba(127, 90, 240, 0.1);
+    color: var(--neon-purple);
+    border: 1px solid var(--neon-purple);
+}
+
+.entry-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.entry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: rgba(26, 26, 36, 0.5);
+    border-radius: 6px;
+}
+
+.entry-amount {
+    color: var(--text);
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.entry-contribution {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+.entry-contribution i {
+    color: var(--neon-cyan);
+}
+
+/* MODAL ACTIONS */
+.detail-actions, .entries-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* ---------------------------------------------------------
+   ANALYSIS SECTION - ΠΛΕΓΜΑ ΜΠΙΛΙΕΣ
+--------------------------------------------------------- */
+.full-bubble-grid-container {
+    margin-top: 10px;
+    border: 1px solid var(--bg-glass);
+    border-radius: var(--radius);
+    padding: 10px;
+    background: rgba(26, 26, 36, 0.7);
+    overflow: auto;
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.full-bubble-grid {
+    display: grid;
+    grid-template-columns: minmax(100px, auto) repeat(12, 1fr);
+    grid-template-rows: 40px repeat(10, 1fr);
+    gap: 3px;
+    width: 100%;
+    min-height: 0;
+    overflow: auto;
+}
+
+/* HEADERS */
+.grid-corner-header {
+    background: rgba(127, 90, 240, 0.3);
+    color: var(--neon-purple);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 6px;
+    border: 1px solid var(--neon-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.grid-month-header {
+    background: rgba(61, 232, 255, 0.2);
+    color: var(--neon-cyan);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 8px 3px;
+    border-radius: 6px;
+    border: 1px solid var(--neon-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.grid-category-header {
+    background: rgba(127, 90, 240, 0.15);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 8px 5px;
+    border-radius: 6px;
+    border: 1px solid var(--neon-purple);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* GRID CELLS - ΟΛΑ ΟΡΑΤΑ */
+.grid-cell {
+    background: rgba(26, 26, 36, 0.5);
+    border-radius: 6px;
+    border: 1px solid var(--bg-glass);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 3px;
+    overflow: hidden;
+}
+
+.grid-cell:hover {
+    background: rgba(127, 90, 240, 0.1);
+    border-color: var(--neon-purple);
+    transform: translateY(-1px);
+}
+
+/* BUBBLES */
+.grid-bubble-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.grid-bubble {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.7rem;
+    position: relative;
+}
+
+.plou-bubble {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 8px var(--neon-cyan-glow);
+    animation: blink-plou 2s infinite;
+}
+
+.nikelo-bubble {
+    background: var(--neon-purple);
+    color: #fff;
+    box-shadow: 0 0 8px var(--neon-purple-glow);
+    animation: blink-nikelo 2s infinite;
+}
+
+/* BUBBLE BADGE (COUNT) */
+.bubble-count-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: #000;
+    font-size: 0.5rem;
+    font-weight: 700;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+}
+
+.plou-bubble .bubble-count-badge {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.nikelo-bubble .bubble-count-badge {
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+}
+
+/* EMPTY CELL - ΑΛΛΑ ΟΡΑΤΟ */
+.empty-cell-indicator {
+    color: var(--text-dim);
+    font-size: 0.65rem;
+    font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   TAB CONTENT
+--------------------------------------------------------- */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ---------------------------------------------------------
+   MODAL
+--------------------------------------------------------- */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    z-index: 100;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 0 20px var(--neon-purple-glow);
+    border: 1px solid var(--neon-purple);
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-content h2 {
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--neon-cyan);
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: #11131b;
+    border: 1px solid var(--neon-purple);
+    color: var(--text);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.modal-actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: var(--neon-purple);
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+
+.btn-secondary {
+    background: var(--bg-glass);
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: var(--text);
+    font-weight: 500;
+    border: 1px solid var(--neon-purple);
+}
+
+/* ---------------------------------------------------------
+   DATE INPUT
+--------------------------------------------------------- */
+.date-input {
+    background: var(--bg-glass);
+    border: 1px solid var(--neon-purple);
+    color: var(--text);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* ---------------------------------------------------------
+   DEBT COLORS
+--------------------------------------------------------- */
+.debt-nikelo {
+    color: var(--neon-purple);
+    font-weight: 600;
+}
+
+.debt-plou {
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   DIGITAL CLOCK - ΜΕ ΠΛΗΡΗ ΗΜΕΡΟΜΗΝΙΑ
+--------------------------------------------------------- */
+.digital-clock {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    background: rgba(26, 26, 36, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    border: 2px solid var(--neon-purple);
+    box-shadow: 0 0 20px var(--neon-purple-glow);
+    z-index: 100;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.full-date {
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+}
+
+.full-date .weekday,
+.full-date .month {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.full-date .day,
+.full-date .year {
+    color: var(--neon-purple);
+    text-shadow: 0 0 8px var(--neon-purple-glow);
+}
+
+.time-section {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.time-section .hours {
+    color: var(--neon-purple);
+    text-shadow: 0 0 10px var(--neon-purple-glow);
+    min-width: 28px;
+    text-align: center;
+}
+
+.time-section .minutes {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan-glow);
+    min-width: 28px;
+    text-align: center;
+}
+
+.time-section .seconds {
+    display: flex;
+    gap: 1px;
+}
+
+.time-section .second-tens {
+    color: var(--neon-purple);
+    text-shadow: 0 0 8px var(--neon-purple-glow);
+    min-width: 14px;
+    text-align: center;
+}
+
+.time-section .second-ones {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan-glow);
+    min-width: 14px;
+    text-align: center;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .full-bubble-grid {
+        grid-template-columns: minmax(80px, auto) repeat(12, 1fr);
+        gap: 2px;
+    }
+    
+    .grid-bubble {
+        width: 20px;
+        height: 20px;
+        font-size: 0.65rem;
+    }
+    
+    .grid-month-header, .grid-category-header, .grid-corner-header {
+        font-size: 0.7rem;
+        padding: 6px 3px;
+    }
+    
+    .bubble-count-badge {
+        width: 12px;
+        height: 12px;
+        font-size: 0.45rem;
+        top: -2px;
+        right: -2px;
+    }
+    
+    .empty-cell-indicator {
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .full-bubble-grid {
+        grid-template-columns: minmax(70px, auto) repeat(12, 1fr);
+        grid-template-rows: 35px repeat(10, 1fr);
+    }
+    
+    .grid-bubble {
+        width: 18px;
+        height: 18px;
+        font-size: 0.6rem;
+    }
+    
+    .grid-month-header, .grid-category-header, .grid-corner-header {
+        font-size: 0.65rem;
+        padding: 5px 2px;
+    }
+}
+
+@media (max-width: 768px) {
+    .compact-table {
+        display: none !important;
+    }
+    
+    .mobile-entries {
+        display: block;
+    }
+    
+    /* Βελτίωση floating debt σε mobile */
+    .floating-debt {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+    }
+    
+    .all-entries-modal-content {
+        padding: 15px;
+    }
+    
+    .detail-modal-content,
+    .entries-modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .topbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .logo {
+        justify-content: center;
+        min-width: auto;
+    }
+    
+    .center-section {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        min-width: auto;
+        flex-wrap: wrap;
+    }
+    
+    .right-section {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        min-width: auto;
+        flex-wrap: wrap;
+    }
+    
+    main {
+        padding: 16px;
+    }
+    
+    #backupNotification {
+        top: 70px;
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+    
+    .pill-btn, .tab {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    
+    .button-tooltip::after {
+        display: none;
+    }
+    
+    .month-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .month-filter-btn, .month-selector-btn {
+        width: 100%;
+    }
+    
+    .full-bubble-grid {
+        grid-template-columns: minmax(60px, auto) repeat(12, 1fr);
+        grid-template-rows: 30px repeat(10, 1fr);
+    }
+    
+    .grid-bubble {
+        width: 16px;
+        height: 16px;
+        font-size: 0.55rem;
+    }
+    
+    .grid-month-header, .grid-category-header, .grid-corner-header {
+        font-size: 0.6rem;
+        padding: 4px 1px;
+    }
+    
+    .bubble-count-badge {
+        width: 10px;
+        height: 10px;
+        font-size: 0.4rem;
+        top: -1px;
+        right: -1px;
+    }
+    
+    .empty-cell-indicator {
+        font-size: 0.55rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .full-bubble-grid {
+        grid-template-columns: minmax(50px, auto) repeat(12, 1fr);
+        grid-template-rows: 28px repeat(10, 1fr);
+        gap: 1px;
+    }
+    
+    .grid-bubble {
+        width: 14px;
+        height: 14px;
+        font-size: 0.5rem;
+    }
+    
+    .grid-month-header, .grid-category-header, .grid-corner-header {
+        font-size: 0.55rem;
+        padding: 3px 1px;
+    }
+    
+    .empty-cell-indicator {
+        font-size: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab, .pill-btn {
+        font-size: 0.7rem;
+        padding: 5px 8px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+    
+    .table-card {
+        padding: 12px;
+    }
+    
+    .compact-table th,
+    .compact-table td {
+        padding: 6px;
+        font-size: 0.7rem;
+    }
+    
+    .month-selector-container {
+        justify-content: center;
+    }
+    
+    .full-bubble-grid {
+        grid-template-columns: minmax(45px, auto) repeat(12, 1fr);
+        grid-template-rows: 25px repeat(10, 1fr);
+    }
+    
+    .grid-bubble {
+        width: 12px;
+        height: 12px;
+        font-size: 0.45rem;
+    }
+    
+    .grid-category-header {
+        font-size: 0.5rem;
+    }
+    
+    .grid-month-header, .grid-corner-header {
+        font-size: 0.5rem;
+    }
+    
+    .bubble-count-badge {
+        width: 8px;
+        height: 8px;
+        font-size: 0.35rem;
+    }
+}
+
+/* STYLE FOR ΕΠΙΛΟΓΗ ΜΗΝΑ BUTTON */
+#showAllEntriesBtn {
+    color: var(--neon-cyan) !important;
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 8px var(--neon-cyan-glow) !important;
+}
+
+#showAllEntriesBtn:hover {
+    background: var(--neon-cyan) !important;
+    color: #000 !important;
+    box-shadow: 0 0 15px var(--neon-cyan-glow) !important;
+    transform: translateY(-2px);
+}
+
+/* ΜΗΝΥΜΑ ΚΛΕΙΔΩΜΑΤΟΣ ΣΥΝΕΙΣΦΟΡΑΣ ΓΙΑ ΕΣΟΔΑ */
+#incomeLockMessage {
+    display: none;
+    font-size: 0.85rem;
+    color: var(--neon-cyan);
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(127, 90, 240, 0.08);
+    border-radius: 8px;
+    border-left: 3px solid var(--neon-cyan);
+    animation: fadeIn 0.3s ease-out;
+}
+
+#incomeLockMessage i {
+    margin-right: 6px;
+}
+
+/* ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ DROPDOWN */
+#entryContribution:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: var(--text-dim);
+    background: rgba(255,255,255,0.05);
+}
+
+/* ΟΡΙΟΘΕΤΗΣΗ ΓΙΑ ΠΟΛΥ ΜΙΚΡΕΣ ΟΘΟΝΕΣ */
+@media (max-width: 360px) {
+    .full-bubble-grid {
+        grid-template-columns: minmax(40px, auto) repeat(12, 1fr);
+        grid-template-rows: 22px repeat(10, 1fr);
+    }
+    
+    .grid-bubble {
+        width: 10px;
+        height: 10px;
+        font-size: 0.4rem;
+    }
+    
+    .grid-category-header {
+        font-size: 0.45rem;
+        padding: 2px;
+    }
+    
+    .grid-month-header, .grid-corner-header {
+        font-size: 0.45rem;
+        padding: 2px;
+    }
+    
+    .empty-cell-indicator {
+        font-size: 0.4rem;
+    }
+}
+
+/* LANDSCAPE ORIENTATION */
+@media (max-height: 600px) and (orientation: landscape) {
+    .full-bubble-grid {
+        grid-template-rows: 25px repeat(10, 1fr);
+    }
+    
+    .grid-bubble {
+        width: 16px;
+        height: 16px;
+        font-size: 0.6rem;
+    }
+    
+    .grid-category-header, .grid-month-header, .grid-corner-header {
+        font-size: 0.6rem;
+        padding: 4px 2px;
+    }
+}
